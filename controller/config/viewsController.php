@@ -13,7 +13,7 @@
 		public function obtener_vistas_controlador($modulo){
 			if(isset($_GET['view'])){
 				
-				$ruta=explode("./", $_GET['view']);
+				$ruta=explode("/", $_GET['view']);
 
 				if($modulo=="dashboard"){
 					if(isset($ruta[1]) && $ruta[1]!=""){
