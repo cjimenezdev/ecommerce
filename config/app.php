@@ -3,7 +3,7 @@
 	/*----------  
 	Ruta o dominio del servidor  - Server path or domain
 	----------*/
-	const URL="http://localhost/ecommerce/";
+	const URL="https://williamshop.herokuapp.com/";
 
 
 	/*----------  
