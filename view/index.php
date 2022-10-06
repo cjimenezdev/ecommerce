@@ -79,7 +79,7 @@
         require_once "./view/page/web-404.php";
         }else{
         if($vistas=="signin"){
-        require_once "./view/page/web-signin.php";
+        require_once './view/page/web-signin.php';
         }else{
         if($vistas=="register"){
         require_once "./view/page/web-register.php";
