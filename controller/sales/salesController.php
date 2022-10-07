@@ -23,7 +23,6 @@
             $empresa = mainModel::limpiar_cadena($_POST['venta_empresa_reg']);
 
 
-            /*-- Comprobando foto o avatar - Checking photo or avatar --*/
             /*-- Directorios de comprobantees - Image Directories --*/
 			
 			$img_dir = '../public/assets/docs/sales/voucher/';

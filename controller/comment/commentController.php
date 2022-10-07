@@ -94,8 +94,7 @@
             <h6>'.$rows['cliente_nombre'].'</h6></div>
             <div><p>'.$rows['comentario_detalle'].'</p></div>
             <div><span>'.$rows['comentario_fecha'].'</span></div>
-            ';
-        }
+            ';}
             $tabla.='</div>
             </div>
             </div>';
@@ -121,8 +120,8 @@
                 </tr>
                 </thead>
                 <tbody>';
-            
-            foreach($datos as $rows){
+                
+                foreach($datos as $rows){
                 
                 /*$total_price=$rows['producto_precio_venta']-($rows['producto_precio_venta']*($rows['producto_descuento']/100));*/
                 
@@ -142,20 +141,76 @@
 						</form>
                     </div>
                 </td>
-                </tr>';
-            }
-            $tabla.='</tbody>
+                </tr>';}
+                
+                $tabla.='</tbody>
                 </table>
                 </div>
                 </div>
                 </div>';
-        }else{
-            $tabla.='<div class="badge badge-danger w-100 p-5"><h5 class="m-0">No tiene comentarios pendientes</h5></div></div></div>';
-           } 
-           $tabla.='</div></div>';
+            }else{
+                
+                $tabla.='<div class="badge badge-danger w-100 p-5"><h5 class="m-0">No tiene comentarios pendientes</h5></div></div></div>';
+            } 
+            
+            $tabla.='</div></div>';
             
             return $tabla;
         }
+
+        /*--------- Controlador registrar comentario - Controller register product ---------*/
+        
+        public function agregar_comentario_controlador(){
+
+            /*-- Recibiendo datos del formulario - Receiving form data --*/
+            $fecha=mainModel::limpiar_cadena($_POST['comment_fecha']);
+            $comentario = mainModel::limpiar_cadena($_POST['comment']);
+            $cliente=mainModel::limpiar_cadena($_POST['user_comment']);
+
+
+            /*-- Preparando datos para enviarlos al modelo - Preparing data to send to the model --*/
+            $datos_comentario_reg=[
+                
+                "fecha_comentario"=>[
+					"campo_marcador"=>":Fecha",
+					"campo_valor"=>$fecha
+				],
+                "detalle_comentario"=>[
+					"campo_marcador"=>":Comentario",
+					"campo_valor"=>$comentario
+				],
+                "id_cliente"=>[
+					"campo_marcador"=>":Cliente",
+					"campo_valor"=>$cliente
+				]
+            ];
+
+            /*-- Guardando datos del comentario - Saving product data --*/
+			$agregar_comentario=mainModel::guardar_datos("comentario_empresa",$datos_comentario_reg);
+
+			if($agregar_comentario->rowCount()==1){
+                $alerta=[
+                    "Alerta"=>"agregar",
+                    "Texto"=>"Los datos del comentario se registraron con éxito",
+                    "Icon"=>"success",
+                    "TxtBtn"=>"Aceptar"
+                ];
+			}else{
+                $alerta=[
+                    "Alerta"=>"simple",
+                    "Texto"=>"No hemos podido registrar los datos, por favor intente nuevamente",
+                    "Icon"=>"error",
+                    "TxtBtn"=>"Aceptar"
+                ];
+			}
+
+			$agregar_comentario->closeCursor();
+			$agregar_comentario=mainModel::desconectar($agregar_comentario);
+
+			echo json_encode($alerta);
+        } 
+        
+        /*-- Fin controlador - End controller --*/
 
         /*--------- Controlador eliminar comentario - Controller delete administrator ---------*/
         public function eliminar_comentario_controlador(){
@@ -228,7 +283,7 @@
 
 			echo json_encode($alerta);
 		} 
-	/*-- Fin controlador - End controller --*/  
+        /*-- Fin controlador - End controller --*/  
         
     }
 
