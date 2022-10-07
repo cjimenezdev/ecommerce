@@ -87,9 +87,18 @@
                 <h2>testimonios</h2>
                 <p>¿Qué dicen de nosotros?</p>
             </header>
+            <?php 
+            $campos="com.id_comentarios, com.detalle_comentario, com.fecha_comentario, cl.cliente_nombre,
+            cl.cliente_apellido, cl.cliente_foto";
+            $consulta="SELECT SQL_CALC_FOUND_ROWS $campos FROM comentario_empresa as com INNER JOIN cliente as cl ON
+            com.id_cliente = cl.cliente_id";
+            $conexion = mainModel::conectar();
+            $datos = $conexion->query($consulta);
+            $datos = $datos->fetchAll();?>
 
             <div class="testimonials-slider swiper-container" data-aos="fade-up" data-aos-delay="200">
                 <div class="swiper-wrapper">
+                    <?php foreach($datos as $rows){?>
                     <div class="swiper-slide">
                         <div class="testimonial-item">
                             <div class="stars">
@@ -98,114 +107,21 @@
                                     class="bi bi-star-fill"></i>
                             </div>
                             <p>
-                                Proin iaculis purus consequat sem cure digni ssim donec
-                                porttitora entum suscipit rhoncus. Accusantium quam,
-                                ultricies eget id, aliquam eget nibh et. Maecen aliquam,
-                                risus at semper.
+                                <?php echo $rows['detalle_comentario']?>
                             </p>
                             <div class="profile mt-auto">
-                                <img src="<?php echo URL; ?>public/assets/img/testimonials/testimonials-1.jpg"
-                                    class="testimonial-img" alt="" />
-                                <h3>Saul Goodman</h3>
-                                <h4>Ceo &amp; Founder</h4>
+                                <img src="<?php echo URL;?>public/assets/img/customers/avatar/<?php echo $rows['cliente_foto']?>"
+                                    class=" testimonial-img" alt="" />
+                                <h3><?php echo $rows['cliente_nombre'].' '.$rows['cliente_apellido'] ?></h3>
+                                <h4><?php echo $rows['fecha_comentario']?></h4>
                             </div>
                         </div>
                     </div>
-                    <!-- End testimonial item -->
-
-                    <div class="swiper-slide">
-                        <div class="testimonial-item">
-                            <div class="stars">
-                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-                                    class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-                                    class="bi bi-star-fill"></i>
-                            </div>
-                            <p>
-                                Export tempor illum tamen malis malis eram quae irure esse
-                                labore quem cillum quid cillum eram malis quorum velit fore
-                                eram velit sunt aliqua noster fugiat irure amet legam anim
-                                culpa.
-                            </p>
-                            <div class="profile mt-auto">
-                                <img src="<?php echo URL; ?>public/assets/img/testimonials/testimonials-2.jpg"
-                                    class="testimonial-img" alt="" />
-                                <h3>Sara Wilsson</h3>
-                                <h4>Designer</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End testimonial item -->
-
-                    <div class="swiper-slide">
-                        <div class="testimonial-item">
-                            <div class="stars">
-                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-                                    class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-                                    class="bi bi-star-fill"></i>
-                            </div>
-                            <p>
-                                Enim nisi quem export duis labore cillum quae magna enim
-                                sint quorum nulla quem veniam duis minim tempor labore quem
-                                eram duis noster aute amet eram fore quis sint minim.
-                            </p>
-                            <div class="profile mt-auto">
-                                <img src="<?php echo URL; ?>public/assets/img/testimonials/testimonials-3.jpg"
-                                    class="testimonial-img" alt="" />
-                                <h3>Jena Karlis</h3>
-                                <h4>Store Owner</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End testimonial item -->
-
-                    <div class="swiper-slide">
-                        <div class="testimonial-item">
-                            <div class="stars">
-                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-                                    class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-                                    class="bi bi-star-fill"></i>
-                            </div>
-                            <p>
-                                Fugiat enim eram quae cillum dolore dolor amet nulla culpa
-                                multos export minim fugiat minim velit minim dolor enim duis
-                                veniam ipsum anim magna sunt elit fore quem dolore labore
-                                illum veniam.
-                            </p>
-                            <div class="profile mt-auto">
-                                <img src="<?php echo URL; ?>public/assets/img/testimonials/testimonials-4.jpg"
-                                    class="testimonial-img" alt="" />
-                                <h3>Matt Brandon</h3>
-                                <h4>Freelancer</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End testimonial item -->
-
-                    <div class="swiper-slide">
-                        <div class="testimonial-item">
-                            <div class="stars">
-                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-                                    class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-                                    class="bi bi-star-fill"></i>
-                            </div>
-                            <p>
-                                Quis quorum aliqua sint quem legam fore sunt eram irure
-                                aliqua veniam tempor noster veniam enim culpa labore duis
-                                sunt culpa nulla illum cillum fugiat legam esse veniam culpa
-                                fore nisi cillum quid.
-                            </p>
-                            <div class="profile mt-auto">
-                                <img src="<?php echo URL; ?>public/assets/img/testimonials/testimonials-5.jpg"
-                                    class="testimonial-img" alt="" />
-                                <h3>John Larson</h3>
-                                <h4>Entrepreneur</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End testimonial item -->
+                    <?php } ?>
                 </div>
                 <div class="swiper-pagination"></div>
             </div>
+
         </div>
     </section>
     <!-- End Testimonials Section -->
@@ -226,8 +142,18 @@
                     </div>
                     <div class="card">
                         <div class="card-body">
-                            <form action="">
+                            <form action="<?php echo URL; ?>ajax/comentarioAjax.php" class="FormularioAjax"
+                                method="POST" data-form="save" data-lang="es">
+                                <input type="hidden" name="modulo_comentario" value="comentario">
                                 <div class="row">
+                                    <div>
+                                        <input type="hidden" name="">
+                                    </div>
+                                    <?php date_default_timezone_set('America/Guayaquil');$fecha_actual = date('Y-m-d',); ?>
+                                    <div><input type="hidden" name="comment_fecha" value="<?php echo $fecha_actual ?>">
+                                        <input type="hidden" name="user_comment"
+                                            value="<?php echo $_SESSION['id_cust']?>">
+                                    </div>
                                     <div class="col-12 col-md-6 ">
                                         <div class="form-outline mb-3">
                                             <input class="form-control" name="user_comment" id="user_comment" disabled
@@ -237,7 +163,8 @@
                                     </div>
                                     <div class="col-12 col-md-6 ">
                                         <div class="form-outline mb-3">
-                                            <input class="form-control" name="user_comment" id="user_comment" disabled
+                                            <input class="form-control" name="user_comment_email"
+                                                id="user_comment_email" disabled
                                                 value="<?php echo $_SESSION['correo_cust']?>">
                                             <label class="form-label" for="user_comment">Correo
                                                 electrónico</label>
@@ -245,8 +172,8 @@
                                     </div>
                                 </div>
                                 <div class="form-outline mb-3">
-                                    <textarea class="form-control" name="comment" id="comment" cols="5"
-                                        rows="5"></textarea>
+                                    <textarea class="form-control" name="comment" id="comment" cols="5" rows="5"
+                                        required></textarea>
                                     <label class="form-label" for="comment">Comentario</label>
                                 </div>
                                 <button class="btn btn-success">Enviar comentario</button>

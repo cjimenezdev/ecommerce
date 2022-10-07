@@ -4,7 +4,7 @@
 		/*---------- Modelo obtener vistas ----------*/
 		protected static function obtener_vistas_modelo($vistas,$modulo){
 			
-			$lista_blanca=["index","profile","product","catalogue","offer","sold","home","bag","order","pay","details","men","women","boy","girl","about","services","contact","admin-profile","admin-new","admin-list","admin-search","admin-update","brand-new","brand-update","customer-new","client-list","client-search","customer-update","category-new","category-list","category-search","category-update","company","product-new","product-list","product-search","product-minimum","product-update","product-cover","product-gallery","product-info","order-new","sale-all"];
+			$lista_blanca=["index","profile","product","catalogue","offer","sold","home","bag","order","pay","details","men","women","boy","girl","about","services","contact","admin-profile","admin-new","admin-list","admin-search","admin-update","brand-new","brand-update","catalogue-new","catalogue-update","customer-new","client-list","client-search","customer-update","category-new","category-list","category-search","category-update","company","product-new","product-list","product-search","product-minimum","product-update","product-cover","product-gallery","product-info","order-new","sale-all"];
 			
 			if(in_array($vistas, $lista_blanca)){
 				

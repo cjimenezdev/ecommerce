@@ -127,7 +127,7 @@ echo '<script>window.location.href="./home/"</script>;';
     </section>
     <!-- End Counts Section -->
 
-    <!-- ======= Promotions Section ======= 
+    <!-- ======= Promotions Section ======= -->
     <section id="promotions" class="promotions">
         <div class="container" data-aos="fade-up">
             <header class="section-header">
@@ -136,15 +136,15 @@ echo '<script>window.location.href="./home/"</script>;';
                 <p>Consulta nuestras promociones
                 </p>
             </header>
-            <?php /*
+            <?php
             require_once "./controller/promotions/promotionsController.php";
             $ins_promocion = new promocionControlador();
 
             echo
             $ins_promocion->promocion_paginador_producto_controlador();
-            */?>
+            ?>
         </div>
-    </section>-->
+    </section>
     <!-- End Promotions Section -->
     <!-- ======= Services Section ======= -->
     <section id="services" class="services">
@@ -451,7 +451,5 @@ echo '<script>window.location.href="./home/"</script>;';
 </main>
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
         class="bi bi-arrow-up-short"></i></a>
-/*---------- Scripts ----------*/
-<?php  include "./view/inc/scripts.php"; ?>
 
 <?php } ?>

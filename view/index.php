@@ -12,6 +12,7 @@
 <body id="main-body" class="scroll">
 
     <div class="h-100">
+
         <?php
         
         $peticion_ajax=false;
@@ -77,11 +78,9 @@
 
         if($vistas=="404"){
         require_once "./view/page/web-404.php";
-        }else{
-        if($vistas=="signin"){
-        require_once './view/page/web-signin.php';
-        }else{
-        if($vistas=="register"){
+        }else if($vistas=="signin"){
+        require_once "./view/page/web-signin.php";
+        }else if($vistas=="register"){
         require_once "./view/page/web-register.php";
         }else{
 
@@ -99,10 +98,8 @@
         }
         }
         }
-        }
         /*---------- Scripts ----------*/
         include "./view/inc/scripts.php";
-        }
         ?>
     </div>
 

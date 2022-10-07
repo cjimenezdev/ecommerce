@@ -65,6 +65,22 @@ body {
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-4 mb-3">
+                                        <?php if($_SESSION['cargo_sto']=="Administrador"){
+                                        $total_catalogo=$ins_login->datos_tabla("Normal","catalogo","id_catalogo",0);?>
+                                        <div class="card shadow-5-primary">
+                                            <div class="card-body">
+                                                <a href="<?php echo URL.DASHBOARD; ?>/catalogue-new/" class="tile">
+                                                    <div class="tile-tittle">Catalogo</div>
+                                                    <div class="tile-icon">
+                                                        <i class="fas fa-tag fa-fw"></i>
+                                                        <p><?php echo $total_catalogo->rowCount(); ?> Registradas</p>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <?php $total_catalogo->closeCursor(); $total_catalogo=$ins_login->desconectar($total_catalogo);}?>
+                                    </div>
+                                    <div class="col-12 col-md-4 mb-3">
                                         <div class="card">
                                             <div class="card-body">
                                                 <?php  $total_promociones=$ins_login->datos_tabla("Normal","promocion","id_promocion",0);?>
