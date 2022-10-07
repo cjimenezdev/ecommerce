@@ -17,6 +17,11 @@
 		}
 
 		 /*--------- Eliminar comentario - Delete order ---------*/
+		if($_POST['modulo_comentario']=="comentario"){
+			echo $ins_comentario->agregar_comentario_controlador();
+		}
+
+		 /*--------- Eliminar comentario - Delete order ---------*/
 		if($_POST['modulo_comentario']=="eliminar"){
 			echo $ins_comentario->eliminar_comentario_controlador();
 		}
