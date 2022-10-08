@@ -9,7 +9,6 @@
 	class catalogoControlador extends mainModel{
         
         /*--------- Controlador registrar catalogo - Controller register product ---------*/
-        
         public function registrar_catalogo_controlador(){
 
             /*-- Comprobando privilegios - Checking privileges --*/
@@ -140,7 +139,6 @@
 
 			echo json_encode($alerta);
         } 
-        
         /*-- Fin controlador - End controller --*/
 
         /*--------- Controlador paginador ventas - Controller Users Pager  ---------*/
@@ -194,9 +192,9 @@
                     <td class="actions ps-0">
                     <div class="btn-group dropup shadow-0">
                     <a type="button" style="margin-left:0 !important;" class="btn btn-sm btn-rounded badge badge-warning m-auto disabled" href="' . URL.DASHBOARD. '/catalogue-update/' . mainModel::encryption($rows['id_catalogo']) . '/" data-mdb-toggle="tooltip" data-mdb-placement="left" title="Editar"><i class="fa-solid fa-pen-nib"></i></a>
-						<form class="FormularioAjax d-inline-block m-auto" action="' . URL . 'ajax/administradorAjax.php" method="POST" data-form="delete" data-lang="es">
-                        <input type="hidden" name="modulo_administrador" value="eliminar">
-                        <input type="hidden" name="id_catalogo_del" value="' . mainModel::encryption($rows['id_catalogo']) . '">
+						<form class="FormularioAjax d-inline-block m-auto" action="' . URL . 'ajax/catalogoAjax.php" method="POST" data-form="delete" data-lang="es">
+                        <input type="hidden" name="modulo_catalogo" value="eliminar">
+                        <input type="hidden" name="catalogo_id_del" value="' . mainModel::encryption($rows['id_catalogo']) . '">
                         <button type="submit" class="btn btn-sm btn-rounded badge badge-danger disabled mx-2" data-mdb-toggle="tooltip" data-mdb-placement="left" title="Eliminar"><i class="fa-solid fa-trash"></i></button></form> 
                     </div>
                         </td>
@@ -206,9 +204,9 @@
                     <td class="actions ps-0">
                         <div class="btn-group dropup shadow-0">
                         <a type="button" class="btn btn-sm btn-rounded badge badge-warning m-auto shadow-3-strong ms-2" href="' . URL.DASHBOARD. '/catalogue-update/' . mainModel::encryption($rows['id_catalogo']) . '/" data-mdb-toggle="tooltip" data-mdb-placement="left" title="Editar"><i class="fa-solid fa-pen-nib"></i></a>
-						<form class="FormularioAjax d-inline-block m-auto" action="' . URL . 'ajax/administradorAjax.php" method="POST" data-form="delete" data-lang="es">
-                        <input type="hidden" name="modulo_administrador" value="eliminar">
-                        <input type="hidden" name="id_catalogo_del" value="' . mainModel::encryption($rows['id_catalogo']) . '">
+						<form class="FormularioAjax d-inline-block m-auto" action="' . URL . 'ajax/catalogoAjax.php" method="POST" data-form="delete" data-lang="es">
+                        <input type="hidden" name="modulo_catalogo" value="eliminar">
+                        <input type="hidden" name="catalogo_id_del" value="' . mainModel::encryption($rows['id_catalogo']) . '">
                         <button type="submit" class="btn btn-sm btn-rounded badge badge-danger mx-2" data-mdb-toggle="tooltip" data-mdb-placement="left" title="Eliminar"><i class="fa-solid fa-trash"></i></button></form> 
                         </div>
                         </td>
@@ -316,10 +314,9 @@
             $identificador=mainModel::limpiar_cadena($_POST['catalogo_identificador_up']);
 
             /*-- Comprobando campos vacios - Checking empty fields --*/
-            if($nombre==""){
+            if($detalle==""){
                 $alerta=[
 					"Alerta"=>"simple",
-					"Titulo"=>"Ocurrió un error inesperado",
 					"Texto"=>"No has llenado todos los campos que son obligatorios",
                     "Icon"=>"error",
                     "TxtBtn"=>"Aceptar"
@@ -328,7 +325,100 @@
 				exit();
             }
 
+            /*-- Comprobando si se ha seleccionado una imagen - Checking if an image has been selected --*/
+			
+			if ($_FILES['catalogo_foto_up']['name'] != "" && $_FILES['catalogo_foto_up']['size'] > 0) {
 
+
+            /*-- Comprobando formato de las imagenes - Checking image format --*/
+            if (mime_content_type($_FILES['catalogo_foto_up']['tmp_name']) != "image/jpeg" && mime_content_type($_FILES['catalogo_foto_up']['tmp_name']) != "image/png") {
+                $alerta = [
+                    "Alerta" => "simple",
+                    "Texto" => "Formato de la imagen no permitido",
+                    "Icon" => "error",
+                    "TxtBtn" => "Aceptar"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            /*-- Comprobando que la imagen no supere el peso permitido - Checking that the image does not exceed the allowed weight --*/
+            $img_max_size = COVER_PRODUCT * 1024;
+            if (($_FILES['catalogo_foto_up']['size'] / 1024) > $img_max_size) {
+                $alerta = [
+                    "Alerta" => "simple",
+                    "Texto" => "Tamaño de la imagen debe ser máximo 3MB",
+                    "Icon" => "error",
+                    "TxtBtn" => "Aceptar"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            /*-- Extencion de las imagenes - extension of the images --*/
+            switch (mime_content_type($_FILES['catalogo_foto_up']['tmp_name'])) {
+                case 'image/jpeg':
+                    $img_ext = ".jpg";
+                    break;
+                case 'image/png':
+                    $img_ext = ".png";
+                    break;
+            }
+
+            /*-- Nombre final de la imagen - Final image name --*/
+            $codigo_img = mainModel::generar_codigo_aleatorio(10, $id);
+            $img_catalogo = $codigo_img . $img_ext;
+
+            /*-- Directorios de imagenes - Image Directories --*/
+            $img_dir = '../public/assets/img/catalogue/';
+
+            /*-- Cambiando permisos al directorio - Changing permissions to the directory --*/
+            chmod($img_dir, 0777);
+
+            /* Moviendo imagen al directorio - Moving image to directory */
+            if (!move_uploaded_file($_FILES['catalogo_foto_up']['tmp_name'], $img_dir . $img_catalogo)) {
+                $alerta = [
+                    "Alerta" => "simple",
+                    "Texto" => "La imagen no se subio al sistema, por favor intente nuevamente",
+                    "Icon" => "error",
+                    "TxtBtn" => "Aceptar"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            /* Eliminando la imagen anterior - Deleting the previous image */
+            if (is_file($img_dir . $campos['foto_catalogo'])) {
+                chmod($img_dir, 0777);
+                unlink($img_dir . $campos['foto_catalogo']);
+            }
+
+            /*-- Preparando datos para enviarlos al modelo - Preparing data to send to the model --*/
+            $datos_catalogo_up = [
+                "foto_catalogo" => [
+                    "campo_marcador" => ":Portada",
+                    "campo_valor" => $img_catalogo
+                ]
+            ];
+
+            $condicion = [
+                "condicion_campo" => "id_catalogo",
+                "condicion_marcador" => ":ID",
+                "condicion_valor" => $id
+            ];
+
+            if (mainModel::actualizar_datos("catalogo", $datos_catalogo_up, $condicion)) {
+                if ($_SESSION['id_sto'] == $id) {
+                    $_SESSION['foto_sto'] = $img_catalogo;
+                }
+            } else {
+
+                if (is_file($img_dir . $img_catalogo)) {
+                    chmod($img_dir, 0777);
+                    unlink($img_dir . $img_catalogo);
+                }
+            } }
+            
             /*-- Preparando datos para enviarlos al modelo - Preparing data to send to the model --*/
 			$datos_catalogo_up=[
                 "fecha_catalogo"=>[
@@ -337,12 +427,8 @@
 				],
 				"detalle_catalogo"=>[
 					"campo_marcador"=>":Detalle",
-					"campo_valor"=>$descripcion
-                ],
-                "foto_catalogo"=>[
-					"campo_marcador"=>":Portada",
-					"campo_valor"=>$img_catalogo
-				]
+					"campo_valor"=>$detalle
+                ]
                 ,
                 "identificador"=>[
 					"campo_marcador"=>":Identficador",
@@ -351,7 +437,7 @@
             ];
 
             $condicion=[
-				"condicion_campo"=>"catalogo_id",
+				"condicion_campo"=>"id_catalogo",
 				"condicion_marcador"=>":ID",
 				"condicion_valor"=>$id
 			];
@@ -359,15 +445,13 @@
             if(mainModel::actualizar_datos("catalogo",$datos_catalogo_up,$condicion)){
 				$alerta=[
 					"Alerta"=>"recargar",
-					"Titulo"=>"¡Categoría actualizada!",
-					"Texto"=>"Los datos de la categoría se actualizaron con éxito en el sistema",
+					"Texto"=>"Catalogo actualizado",
 					"Icon"=>"success",
 					"TxtBtn"=>"Aceptar"
 				];
 			}else{
 				$alerta=[
 					"Alerta"=>"simple",
-					"Titulo"=>"Ocurrió un error inesperado",
 					"Texto"=>"No hemos podido actualizar los datos de la categoría, por favor intente nuevamente",
 					"Icon"=>"error",
 					"TxtBtn"=>"Aceptar"
@@ -375,6 +459,81 @@
 			}
 			echo json_encode($alerta);
         } /*-- Fin controlador - End controller --*/
+
+        /*--------- Controlador eliminar catalogo - Controller delete catalogue ---------*/
+        public function eliminar_catalogo_controlador(){
+
+			/*-- Comprobando privilegios - Checking privileges --*/
+			if($_SESSION['cargo_sto']!="Administrador"){
+                $alerta=[
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Acceso no permitido",
+                    "Texto"=>"No tienes los permisos necesarios para realizar esta operación en el sistema",
+                    "Icon"=>"error",
+                    "TxtBtn"=>"Aceptar"
+                ];
+				echo json_encode($alerta);
+				exit();
+			}
+
+			/*-- Recuperando id del catalogo - Retrieving catalogue id - --*/
+			$id=mainModel::decryption($_POST['catalogo_id_del']);
+			$id=mainModel::limpiar_cadena($id);
+
+			/*-- Comprobando catalogo principal - Checking primary user --*/
+			if($id==1){
+				$alerta=[
+					"Alerta"=>"simple",
+					"Texto"=>"No podemos eliminar el catalogo del sistema",
+                    "Icon"=>"error",
+                    "TxtBtn"=>"Aceptar"
+				];
+				echo json_encode($alerta);
+				exit();
+			}
+
+			/*-- Comprobando catalogo en la BD - Checking user in DB --*/
+			$check_catalogo=mainModel::ejecutar_consulta_simple("SELECT id_catalogo FROM catalogo WHERE id_catalogo='$id'");
+			if($check_catalogo->rowCount()<=0){
+				$alerta=[
+					"Alerta"=>"simple",
+					"Texto"=>"El catalogo que intenta eliminar no existe en el sistema",
+                    "Icon"=>"error",
+                    "TxtBtn"=>"Aceptar"
+				];
+				echo json_encode($alerta);
+				exit();
+			}
+			$check_catalogo->closeCursor();
+			$check_catalogo=mainModel::desconectar($check_catalogo);
+
+			
+			/*-- Eliminando catalogo - Deleting catalogue --*/
+			$eliminar_catalogo=mainModel::eliminar_registro("catalogo","id_catalogo",$id);
+
+			if($eliminar_catalogo->rowCount()==1){
+				$alerta=[
+                    "Alerta"=>"recargar",
+                    "Texto"=>"El catalogo ha sido eliminado del sistema exitosamente",
+                    "Icon"=>"success",
+                    "TxtBtn"=>"Aceptar"
+                ];
+			}else{
+				$alerta=[
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No hemos podido eliminar el catalogo del sistema, por favor intente nuevamente",
+                    "Icon"=>"error",
+                    "TxtBtn"=>"Aceptar"
+                ];
+			}
+
+			$eliminar_catalogo->closeCursor();
+			$eliminar_catalogo=mainModel::desconectar($eliminar_catalogo);
+
+			echo json_encode($alerta);
+		} 
+	/*-- Fin controlador - End controller --*/   
     }
     
 ?>
