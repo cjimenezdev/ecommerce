@@ -8,17 +8,17 @@
 
 		/*--------- Instancia al controlador - Instance to controller ---------*/
 		require_once "../controller/catalogue/catalogueController.php";
-        $ins_venta = new catalogoControlador();
+        $ins_catalogo = new catalogoControlador();
         
 
-        /*--------- Registrar venta - Register order ---------*/
+        /*--------- Registrar catalogo - Register catalogue ---------*/
         if($_POST['modulo_catalogo']=="agregar"){
-            echo $ins_venta->registrar_catalogo_controlador();
+            echo $ins_catalogo->registrar_catalogo_controlador();
 		}
 
-		 /*--------- Eliminar venta - Delete order ---------*/
+		 /*--------- Eliminar catalogo - Delete catalogue ---------*/
 		if($_POST['modulo_catalogo']=="eliminar"){
-			echo $ins_venta->eliminar_catalogo_controlador();
+			echo $ins_catalogo->eliminar_catalogo_controlador();
 		}
 
         /*--------- Actualizar catalogo - Update category ---------*/
