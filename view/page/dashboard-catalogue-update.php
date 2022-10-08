@@ -8,7 +8,7 @@
             <h6 class="mb-0">
                 <a href="<?php echo URL; ?>home/" style="color:var(--text-primary);">Home</a>
                 <span class="text-dark">/</span>
-                <a href="<?php echo URL; ?>admin/catalogo-new/">catalogo/</a>
+                <a href="<?php echo URL; ?>admin/catalogue-new/">catalogo/</a>
                 <span class="text-primary text-decoration-underline">Actualizar</a>
             </h6>
         </nav>
@@ -32,10 +32,10 @@
                         <div class="row ">
                             <div class="col-12 col-md-6">
                                 <div class="form__outline mb-4">
-                                    <input type="date" class="form__input" name="catalogo_nombre_up"
-                                        value="<?php echo $campos['fecha_catalogo']; ?>" id="catalogo_nombre"
+                                    <input type="date" class="form__input" name="catalogo_fecha_up"
+                                        value="<?php echo $campos['fecha_catalogo']; ?>" id="catalogue_fecha"
                                         maxlength="49">
-                                    <label for="catalogo_nombre" class="form__label">Fecha
+                                    <label for="catalogue_fecha" class="form__label">Fecha
                                         <?php echo FIELD_OBLIGATORY; ?></label>
                                 </div>
                             </div>
@@ -51,11 +51,48 @@
                             <div class="col-12">
                                 <div class="form__outline mb-4">
                                     <textarea pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\s ]{4,700}" class="form__input"
-                                        name="catalogo_descripcion_up" id="catalogo_descripcion" maxlength="700"
+                                        name="catalogo_detalle_up" id="catalogue_detalle" maxlength="700"
                                         rows="50"><?php echo $campos['detalle_catalogo']; ?></textarea>
-                                    <label for="catalogo_descripcion" class="form__label">Descripción</label>
+                                    <label for="catalogue_detalle" class="form__label">Descripción</label>
                                 </div>
                             </div>
+                            <div class="col-12">
+                                <div class=" m-auto d-flex flex-column justify-content-center">
+                                    <div class="drag-area m-auto justify-content-start position-relative"
+                                        style="height: 420px;width: 300px">
+                                        <div class="icon"><i class="fas fa-cloud-upload-alt"></i>
+                                        </div>
+                                        <header>Arrastrar imagen</header>
+                                        <button class="btn btn-success btn-floating text-white" height="10" width="10"
+                                            type="button" style="top: 50%;left: 50%;"><i
+                                                class="fa-solid fa-camera"></i></button>
+                                        <input type="file" id="catalogo_foto" name="catalogo_foto_up" hidden>
+                                        <div class="preview">
+                                            <?php if (is_file("./public/assets/img/catalogue/" . $campos['foto_catalogo'])) { ?>
+                                            <img class="img-fluid" style="height:420px; width:100%; border-radius: 0;"
+                                                alt="" title="user_photo"
+                                                src="<?php echo URL . "public/assets/img/catalogue/" . $campos['foto_catalogo']; ?>">
+                                            <?php } else { ?>
+                                            <img src="<?php echo URL; ?>public/assets/img/catalogue/default.jpg"
+                                                class="img-fluid" style="height:420px; width:50%;">
+                                            <?php } ?>
+                                        </div>
+                                        <style>
+                                        .drag-area .preview img {
+                                            height: 420px;
+                                            width: 100%;
+                                            border-radius: 0%;
+                                        }
+                                        </style>
+                                    </div>
+                                    <label for="catalogo_foto"
+                                        class="form-label p-4 mt-4 badge-light-info text-info text-center"
+                                        style="font-size: 12px;">Permitido: JPG, JPEG,
+                                        PNG. Tamaño máximo 3MB. Aspecto cuadrado (1:1).
+                                    </label>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </fieldset>

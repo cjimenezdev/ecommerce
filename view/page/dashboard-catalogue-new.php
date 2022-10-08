@@ -11,7 +11,7 @@
                 <a href="<?php echo URL.DASHBOARD; ?>/home/" style="color:var(--text-primary);">Home</a>
                 <span>/</span>
                 <a href="<?php echo URL.DASHBOARD; ?>/catalogue-new/"
-                    class="text-primary text-decoration-underline">Ctalogos</a>
+                    class="text-primary text-decoration-underline">Catálogos</a>
             </h6>
         </nav>
     </div>
