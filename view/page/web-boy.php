@@ -106,7 +106,7 @@
             require_once "./controller/products/productsController.php";
             $ins_producto = new productoControlador();
 
-            echo $ins_producto->caballero_paginador_producto_controlador($pagina[3],10,$pagina[0],$pagina[2],$pagina[1],$_SESSION['busqueda_tienda']);
+            echo $ins_producto->niño_paginador_producto_controlador($pagina[3],10,$pagina[0],$pagina[2],$pagina[1],$_SESSION['busqueda_tienda']);
         ?>
 </div>
 
