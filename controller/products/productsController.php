@@ -732,7 +732,6 @@
 			return $tabla;
         } /*-- Fin controlador - End controller --*/
 
-
         /*--------- Controlador paginador productos (cliente) - Product Pager Controller (client) ---------*/
         public function caballero_paginador_producto_controlador($pagina,$registros,$url,$orden,$categoria,$busqueda){
             $pagina=mainModel::limpiar_cadena($pagina);
@@ -803,7 +802,7 @@
                 }else{
                     $condicion_busqueda="";
                 }
-				$consulta="SELECT SQL_CALC_FOUND_ROWS $campos FROM producto WHERE $condicion_busqueda producto_estado='Habilitado' AND producto_genero = 'Masculino' AND producto_tipo_persona = 'Caballero' AND producto_stock>0 AND producto_nombre  LIKE '%$busqueda%' ORDER BY $campo_orden LIMIT $inicio,$registros";
+				$consulta="SELECT SQL_CALC_FOUND_ROWS $campos FROM producto WHERE $condicion_busqueda producto_estado='Habilitado' AND producto_genero = 'Masculino' AND producto_tipo_persona = 'caballero' AND producto_stock>0 AND producto_nombre  LIKE '%$busqueda%' ORDER BY $campo_orden LIMIT $inicio,$registros";
 			}elseif($categoria!="all"){
 				$consulta="SELECT SQL_CALC_FOUND_ROWS $campos FROM producto WHERE producto_estado='Habilitado' AND producto_genero = 'Masculino' AND producto_tipo_persona = 'Caballero'  AND categoria_id='$categoria' AND producto_stock>0 ORDER BY $campo_orden LIMIT $inicio,$registros";
 			}else{
@@ -907,7 +906,182 @@
 			return $tabla;
         } /*-- Fin controlador - End controller --*/
 
-/*--------- Controlador paginador productos (cliente) - Product Pager Controller (client) ---------*/
+        
+        /*--------- Controlador paginador productos (cliente) - Product Pager Controller (client) ---------*/
+        public function niño_paginador_producto_controlador($pagina,$registros,$url,$orden,$categoria,$busqueda){
+            $pagina=mainModel::limpiar_cadena($pagina);
+			$registros=mainModel::limpiar_cadena($registros);
+
+			$url=mainModel::limpiar_cadena($url);
+            $orden=mainModel::limpiar_cadena($orden);
+            $categoria=mainModel::limpiar_cadena($categoria);
+            $busqueda=mainModel::limpiar_cadena($busqueda);
+            $url=URL.$url."/".$categoria."/".$orden."/";
+			$tabla="";
+
+
+            /*-- Lista blanca para orden de busqueda - Whitelist for search order --*/
+            $orden_lista=["ASC","DESC","MAX","MIN"];
+
+			if(!in_array($orden, $orden_lista)){
+				return '
+                    <div class="alert alert-danger text-center" role="alert" data-mdb-color="danger">
+                        <p><i class="fas fa-exclamation-triangle fa-5x"></i></p>
+                        <h4 class="alert-heading">¡Ocurrió un error inesperado!</h4>
+                        <p class="mb-0">Lo sentimos, no podemos realizar la búsqueda de productos ya que al parecer a ingresado un dato incorrecto.</p>
+                    </div>
+				';
+				exit();
+			}
+
+            /*-- Estableciendo orden de busqueda - Establishing search order --*/
+            if($orden=="ASC" || $orden=="DESC"){
+                $campo_orden="producto_nombre $orden";
+            }elseif($orden=="MAX" || $orden=="MIN"){
+                if($orden=="MAX"){
+                    $campo_orden="producto_precio_venta DESC";
+                }else{
+                    $campo_orden="producto_precio_venta ASC";
+                }
+            }else{
+                $campo_orden="producto_nombre ASC";
+            }
+            
+            /*-- Comprobando categoria - Checking category --*/
+            if($categoria!="all"){
+                $check_categoria=mainModel::ejecutar_consulta_simple("SELECT categoria_id FROM categoria WHERE categoria_id='$categoria' AND categoria_estado='Habilitada'");
+                if($check_categoria->rowCount()<=0){
+                    return '
+                        <div class="alert alert-danger text-center" role="alert" data-mdb-color="danger">
+                            <p><i class="fas fa-exclamation-triangle fa-5x"></i></p>
+                            <h4 class="alert-heading">¡Ocurrió un error inesperado!</h4>
+                            <p class="mb-0">Lo sentimos, no podemos realizar la búsqueda de productos ya que al parecer a ingresado una categoría incorrecta.</p>
+                        </div>
+                    ';
+                    exit();
+                }
+                $check_categoria->closeCursor();
+                $check_categoria=mainModel::desconectar($check_categoria);
+            }
+            
+
+			$pagina = (isset($pagina) && $pagina>0) ? (int) $pagina : 1;
+            $inicio = ($pagina>0) ? (($pagina * $registros)-$registros) : 0;
+
+
+            $campos="*";
+            
+            if(isset($busqueda) && $busqueda!=""){
+                if($categoria!="all"){
+                    $condicion_busqueda="categoria_id='$categoria' AND";
+                }else{
+                    $condicion_busqueda="";
+                }
+				$consulta="SELECT SQL_CALC_FOUND_ROWS $campos FROM producto WHERE $condicion_busqueda producto_estado='Habilitado' AND producto_genero = 'Masculino' AND producto_tipo_persona = 'Niño' AND producto_stock>0 AND producto_nombre  LIKE '%$busqueda%' ORDER BY $campo_orden LIMIT $inicio,$registros";
+			}elseif($categoria!="all"){
+				$consulta="SELECT SQL_CALC_FOUND_ROWS $campos FROM producto WHERE producto_estado='Habilitado' AND producto_genero = 'Masculino' AND producto_tipo_persona = 'Niño'  AND categoria_id='$categoria' AND producto_stock>0 ORDER BY $campo_orden LIMIT $inicio,$registros";
+			}else{
+				$consulta="SELECT SQL_CALC_FOUND_ROWS $campos FROM producto WHERE producto_estado='Habilitado' AND producto_genero = 'Masculino' AND producto_tipo_persona = 'Niño' AND producto_stock>0  ORDER BY $campo_orden LIMIT $inicio,$registros";
+			}
+
+			$conexion = mainModel::conectar();
+
+			$datos = $conexion->query($consulta);
+
+			$datos = $datos->fetchAll();
+
+			$total = $conexion->query("SELECT FOUND_ROWS()");
+			$total = (int) $total->fetchColumn();
+
+            $Npaginas =ceil($total/$registros);
+
+            $tabla.='<div class="container mt-5 mb-5">';
+
+            if($total>=1 && $pagina<=$Npaginas){
+				$contador=$inicio+1;
+				$pag_inicio=$inicio+1;
+				foreach($datos as $rows){
+
+                    $total_price=$rows['producto_precio_venta']-($rows['producto_precio_venta']*($rows['producto_descuento']/100));
+
+					$tabla.='
+                        <div class="row">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card">
+                            <figure>
+                            <div class="card-body">';
+                            
+                                if(is_file("./public/assets/img/products/cover/".$rows['producto_portada'])){
+                                    $tabla.='<img src="'.URL.'public/assets/img/products/cover/'.$rows['producto_portada'].'" class="img-fluid" alt="'.$rows['producto_nombre'].'" />';
+                                }else{
+                                    $tabla.='<img src="'.URL.'public/assets/img/products/cover/default.jpg" class="img-fluid" alt="'.$rows['producto_nombre'].'" />';
+                                }
+                            $tabla.='
+                                <div class="card-product-content scroll">
+                                    <h5 class="text-center fw-bolder">'.mainModel::limitar_cadena($rows['producto_nombre'],70,"...").'</h5>
+                                    <h6 class="text-center fw-bolder">'.$rows['producto_marca'].'</h6>
+                                    <p class="text-center fw-bolder">'.COIN_SYMBOL.number_format($total_price,COIN_DECIMALS,COIN_SEPARATOR_DECIMAL,COIN_SEPARATOR_THOUSAND).' '.COIN_NAME.'</p>';
+                                    if($rows['producto_tipo']=="Fisico"){
+                                        $tabla.='<span class="full-box text-center text-muted" style="display: block;">En stock: '.$rows['producto_stock'].'</span>';
+                                    }
+                                $tabla.='<div class="d-flex justify-content-between">';
+                              if(isset($_SESSION['nombre_cust'])){
+                                     $tabla.='<form class="FormularioAjax" onsubmit="return true" method="POST" data-form="save" action="../../ajax/carritoAjax.php" autocomplete="off">';
+                                }else{
+                               $tabla.='<form class="FormularioAjax" onsubmit="return true" method="POST" data-form="save" action="../ajax/carritoAjax.php" autocomplete="off">';
+                                }
+                               $tabla.='<input type="hidden" name="modulo_carrito" value="agregar">
+                                <input type="hidden" name="product_id" value="'.mainModel::encryption($rows['producto_id']).'"
+                                class="form-control text-center" id="product_id"  maxlength="10" >
+                                <input type="hidden" name="product_nombre" value="'.mainModel::encryption($rows['producto_nombre']).'"
+                                class="form-control text-center" id="product_nombre"  maxlength="10" >
+                                <input type="hidden" name="product_precio_venta" value="'.$rows['producto_precio_venta']-($rows['producto_precio_venta']*($rows['producto_descuento']/100)).'"
+                                class="form-control text-center" id="product_precio_venta"  maxlength="10" >
+                                <input type="hidden" name="product_portada" value="'.$rows['producto_portada'].'"
+                                class="form-control text-center" id="product_portada"  maxlength="10" >
+                                <input type="hidden" name="product_cant" id="product_cant" value="1"
+                                class="form-control text-center" pattern="[0-9]{1,10}" maxlength="10" >
+                                <button type="submit" class="btn badge badge-success btn-link btn-sm btn-rounded text-success" name="btnAction" value="Agregar" ><i class="fa-solid fa-cart-shopping"></i> Añadir al carrito</button>
+                                </form>
+                                    <a href="'.URL.'details/'.mainModel::encryption($rows['producto_id']).'/" class="btn btn-link btn-sm btn-rounded" data-mdb-toggle="tooltip" title="Info" ><i class="fa-solid fa-circle-info"></i></a>
+                                    </div>
+                                    </div>
+                                    </form>
+                            </div>
+                            </figure>
+                            </div>
+                            </div>
+                        </div>
+					';
+					$contador++;
+				}
+				$pag_final=$contador-1;
+			}else{
+				if($total>=1){
+                    $tabla.='
+                        <div class="alert alert-default text-center" role="alert" data-mdb-color="danger">
+                            <p><i class="fas fa-boxes fa-fw fa-5x"></i></p>
+                            <h4 class="alert-heading">Haga clic en el botón para listar nuevamente los productos que están registrados en la tienda.</h4>
+                            <a href="'.$url.'" class="btn btn-primary btn-rounded btn-lg" data-mdb-ripple-color="dark">Haga clic acá para recargar el listado</a>
+                        </div>
+					';
+				}else{
+					$tabla.='
+                        <div class="alert alert-default text-center" role="alert" data-mdb-color="danger">
+                            <p><i class="fas fa-broadcast-tower fa-fw fa-5x"></i></p>
+                            <h4 class="alert-heading">¡No hay productos en inventario!</h4>
+                            <p class="mb-0">No hemos encontrado productos registrados en la tienda.</p>
+                        </div>
+					';
+				}
+			}
+
+            $tabla.='</div>';
+
+			return $tabla;
+        } /*-- Fin controlador - End controller --*/
+        
+        /*--------- Controlador paginador productos (cliente) - Product Pager Controller (client) ---------*/
         public function dama_paginador_producto_controlador($pagina,$registros,$url,$orden,$categoria,$busqueda){
             $pagina=mainModel::limpiar_cadena($pagina);
 			$registros=mainModel::limpiar_cadena($registros);
@@ -1080,6 +1254,181 @@
 
 			return $tabla;
         } /*-- Fin controlador - End controller --*/
+
+        /*--------- Controlador paginador productos (cliente) - Product Pager Controller (client) ---------*/
+        public function niña_paginador_producto_controlador($pagina,$registros,$url,$orden,$categoria,$busqueda){
+            $pagina=mainModel::limpiar_cadena($pagina);
+			$registros=mainModel::limpiar_cadena($registros);
+
+			$url=mainModel::limpiar_cadena($url);
+            $orden=mainModel::limpiar_cadena($orden);
+            $categoria=mainModel::limpiar_cadena($categoria);
+            $busqueda=mainModel::limpiar_cadena($busqueda);
+            $url=URL.$url."/".$categoria."/".$orden."/";
+			$tabla="";
+
+
+            /*-- Lista blanca para orden de busqueda - Whitelist for search order --*/
+            $orden_lista=["ASC","DESC","MAX","MIN"];
+
+			if(!in_array($orden, $orden_lista)){
+				return '
+                    <div class="alert alert-danger text-center" role="alert" data-mdb-color="danger">
+                        <p><i class="fas fa-exclamation-triangle fa-5x"></i></p>
+                        <h4 class="alert-heading">¡Ocurrió un error inesperado!</h4>
+                        <p class="mb-0">Lo sentimos, no podemos realizar la búsqueda de productos ya que al parecer a ingresado un dato incorrecto.</p>
+                    </div>
+				';
+				exit();
+			}
+
+            /*-- Estableciendo orden de busqueda - Establishing search order --*/
+            if($orden=="ASC" || $orden=="DESC"){
+                $campo_orden="producto_nombre $orden";
+            }elseif($orden=="MAX" || $orden=="MIN"){
+                if($orden=="MAX"){
+                    $campo_orden="producto_precio_venta DESC";
+                }else{
+                    $campo_orden="producto_precio_venta ASC";
+                }
+            }else{
+                $campo_orden="producto_nombre ASC";
+            }
+            
+            /*-- Comprobando categoria - Checking category --*/
+            if($categoria!="all"){
+                $check_categoria=mainModel::ejecutar_consulta_simple("SELECT categoria_id FROM categoria WHERE categoria_id='$categoria' AND categoria_estado='Habilitada'");
+                if($check_categoria->rowCount()<=0){
+                    return '
+                        <div class="alert alert-danger text-center" role="alert" data-mdb-color="danger">
+                            <p><i class="fas fa-exclamation-triangle fa-5x"></i></p>
+                            <h4 class="alert-heading">¡Ocurrió un error inesperado!</h4>
+                            <p class="mb-0">Lo sentimos, no podemos realizar la búsqueda de productos ya que al parecer a ingresado una categoría incorrecta.</p>
+                        </div>
+                    ';
+                    exit();
+                }
+                $check_categoria->closeCursor();
+                $check_categoria=mainModel::desconectar($check_categoria);
+            }
+            
+
+			$pagina = (isset($pagina) && $pagina>0) ? (int) $pagina : 1;
+            $inicio = ($pagina>0) ? (($pagina * $registros)-$registros) : 0;
+
+
+            $campos="*";
+            
+            if(isset($busqueda) && $busqueda!=""){
+                if($categoria!="all"){
+                    $condicion_busqueda="categoria_id='$categoria' AND";
+                }else{
+                    $condicion_busqueda="";
+                }
+				$consulta="SELECT SQL_CALC_FOUND_ROWS $campos FROM producto WHERE $condicion_busqueda producto_estado='Habilitado' AND producto_genero = 'Femenino' AND producto_tipo_persona = 'Niña' AND producto_stock>0 AND producto_nombre  LIKE '%$busqueda%' ORDER BY $campo_orden LIMIT $inicio,$registros";
+			}elseif($categoria!="all"){
+				$consulta="SELECT SQL_CALC_FOUND_ROWS $campos FROM producto WHERE producto_estado='Habilitado' AND producto_genero = 'Femenino' AND producto_tipo_persona = 'Niña'  AND categoria_id='$categoria' AND producto_stock>0 ORDER BY $campo_orden LIMIT $inicio,$registros";
+			}else{
+				$consulta="SELECT SQL_CALC_FOUND_ROWS $campos FROM producto WHERE producto_estado='Habilitado' AND producto_genero = 'Femenino' AND producto_tipo_persona = 'Niña' AND producto_stock>0  ORDER BY $campo_orden LIMIT $inicio,$registros";
+			}
+
+			$conexion = mainModel::conectar();
+
+			$datos = $conexion->query($consulta);
+
+			$datos = $datos->fetchAll();
+
+			$total = $conexion->query("SELECT FOUND_ROWS()");
+			$total = (int) $total->fetchColumn();
+
+            $Npaginas =ceil($total/$registros);
+
+            $tabla.='<div class="container mt-5 mb-5">';
+
+            if($total>=1 && $pagina<=$Npaginas){
+				$contador=$inicio+1;
+				$pag_inicio=$inicio+1;
+				foreach($datos as $rows){
+
+                    $total_price=$rows['producto_precio_venta']-($rows['producto_precio_venta']*($rows['producto_descuento']/100));
+
+					$tabla.='
+                        <div class="row">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card">
+                            <figure>
+                            <div class="card-body">';
+                            
+                                if(is_file("./public/assets/img/products/cover/".$rows['producto_portada'])){
+                                    $tabla.='<img src="'.URL.'public/assets/img/products/cover/'.$rows['producto_portada'].'" class="img-fluid" alt="'.$rows['producto_nombre'].'" />';
+                                }else{
+                                    $tabla.='<img src="'.URL.'public/assets/img/products/cover/default.jpg" class="img-fluid" alt="'.$rows['producto_nombre'].'" />';
+                                }
+                            $tabla.='
+                                <div class="card-product-content scroll">
+                                    <h5 class="text-center fw-bolder">'.mainModel::limitar_cadena($rows['producto_nombre'],70,"...").'</h5>
+                                    <h6 class="text-center fw-bolder">'.$rows['producto_marca'].'</h6>
+                                    <p class="text-center fw-bolder">'.COIN_SYMBOL.number_format($total_price,COIN_DECIMALS,COIN_SEPARATOR_DECIMAL,COIN_SEPARATOR_THOUSAND).' '.COIN_NAME.'</p>';
+                                    if($rows['producto_tipo']=="Fisico"){
+                                        $tabla.='<span class="full-box text-center text-muted" style="display: block;">En stock: '.$rows['producto_stock'].'</span>';
+                                    }
+                                $tabla.='<div class="d-flex justify-content-between">';
+                                if(isset($_SESSION['nombre_cust'])){
+                                     $tabla.='<form class="FormularioAjax" onsubmit="return true" method="POST" data-form="save" action="../../ajax/carritoAjax.php" autocomplete="off">';
+                                }else{
+                               $tabla.='<form class="FormularioAjax" onsubmit="return true" method="POST" data-form="save" action="../ajax/carritoAjax.php" autocomplete="off">';
+                                }
+                                $tabla.='<input type="hidden" name="modulo_carrito" value="agregar">
+                                <input type="hidden" name="product_id" value="'.mainModel::encryption($rows['producto_id']).'"
+                                class="form-control text-center" id="product_id"  maxlength="10" >
+                                <input type="hidden" name="product_nombre" value="'.mainModel::encryption($rows['producto_nombre']).'"
+                                class="form-control text-center" id="product_nombre"  maxlength="10" >
+                                <input type="hidden" name="product_precio_venta" value="'.$rows['producto_precio_venta']-($rows['producto_precio_venta']*($rows['producto_descuento']/100)).'"
+                                class="form-control text-center" id="product_precio_venta"  maxlength="10" >
+                                <input type="hidden" name="product_portada" value="'.$rows['producto_portada'].'"
+                                class="form-control text-center" id="product_portada"  maxlength="10" >
+                                <input type="hidden" name="product_cant" id="product_cant" value="1"
+                                class="form-control text-center" pattern="[0-9]{1,10}" maxlength="10" >
+                                <button type="submit" class="btn badge badge-success btn-link btn-sm btn-rounded text-success" name="btnAction" value="Agregar" data-mdb-toggle="tooltip" title="Carrito"><i class="fa-solid fa-cart-shopping"></i> Añadir al carrito</button>
+                                </form>
+                                    <a href="'.URL.'details/'.mainModel::encryption($rows['producto_id']).'/" class="btn btn-link btn-sm btn-rounded" data-mdb-toggle="tooltip" title="Info" ><i class="fa-solid fa-circle-info"></i></a>
+                                    </div>
+                                    </div>
+                                    </form>
+                            </div>
+                            </figure>
+                            </div>
+                            </div>
+                        </div>
+					';
+					$contador++;
+				}
+				$pag_final=$contador-1;
+			}else{
+				if($total>=1){
+                    $tabla.='
+                        <div class="alert alert-default text-center" role="alert" data-mdb-color="danger">
+                            <p><i class="fas fa-boxes fa-fw fa-5x"></i></p>
+                            <h4 class="alert-heading">Haga clic en el botón para listar nuevamente los productos que están registrados en la tienda.</h4>
+                            <a href="'.$url.'" class="btn btn-primary btn-rounded btn-lg" data-mdb-ripple-color="dark">Haga clic acá para recargar el listado</a>
+                        </div>
+					';
+				}else{
+					$tabla.='
+                        <div class="alert alert-default text-center" role="alert" data-mdb-color="danger">
+                            <p><i class="fas fa-broadcast-tower fa-fw fa-5x"></i></p>
+                            <h4 class="alert-heading">¡No hay productos en inventario!</h4>
+                            <p class="mb-0">No hemos encontrado productos registrados en la tienda.</p>
+                        </div>
+					';
+				}
+			}
+
+            $tabla.='</div>';
+
+			return $tabla;
+        } /*-- Fin controlador - End controller --*/
+        
         /*---------- Controlador actualizar portada de producto - Controller update product cover ----------*/
 		public function actualizar_portada_producto_controlador(){
 
