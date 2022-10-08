@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3307
--- Tiempo de generación: 07-10-2022 a las 23:41:08
+-- Tiempo de generación: 08-10-2022 a las 03:09:54
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.1.6
 
@@ -54,9 +54,9 @@ CREATE TABLE `catalogo` (
 --
 
 INSERT INTO `catalogo` (`id_catalogo`, `fecha_catalogo`, `detalle_catalogo`, `foto_catalogo`, `identificador`) VALUES
-(1, '2022-10-06', 'Nuevos estilos', '', 'Administrador'),
-(2, '2022-10-06', 'Nuevos estilos', '', 'Administrador'),
-(3, '2022-10-06', 'Nuevos estilos', 'P2F5Q3C1R3-3.jpg', 'Administrador');
+(3, '2022-10-06', 'Nuevos estilos', 'G7F0I3F4B7-3.jpg', 'Caballero'),
+(5, '2022-09-30', 'Estilo formal', 'C8U6T4Q7R3-3.jpg', 'Dama'),
+(6, '2022-10-06', 'Estilo infantil', 'T2A7C7E4I9-4.jpg', 'Niños');
 
 -- --------------------------------------------------------
 
@@ -510,7 +510,7 @@ ALTER TABLE `caja`
 -- AUTO_INCREMENT de la tabla `catalogo`
 --
 ALTER TABLE `catalogo`
-  MODIFY `id_catalogo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_catalogo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `categoria`
