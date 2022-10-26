@@ -28,6 +28,7 @@ class administradorControlador extends mainModel{
 
 			$nombre = mainModel::limpiar_cadena($_POST['usuario_nombre_reg']);
 			$apellido = mainModel::limpiar_cadena($_POST['usuario_apellido_reg']);
+            $fnacimiento = mainModel::limpiar_cadena($_POST['usuario_fnacimiento_reg']);
 			$telefono = mainModel::limpiar_cadena($_POST['usuario_telefono_reg']);
 			$identidad = mainModel::limpiar_cadena($_POST['usuario_identidad_reg']);
 			$genero = mainModel::limpiar_cadena($_POST['usuario_genero_reg']);
@@ -38,7 +39,7 @@ class administradorControlador extends mainModel{
 			$clave_1 = mainModel::limpiar_cadena($_POST['usuario_clave_1_reg']);
 			$clave_2 = mainModel::limpiar_cadena($_POST['usuario_clave_2_reg']);
 			$estado = mainModel::limpiar_cadena($_POST['usuario_estado_reg']);
-			$code = mainModel::limpiar_cadena($_POST['usuario_code_reg']);
+			$code = mainModel::limpiar_cadena($_POST['usuario_codigo_reg']);
 
 
             /*-- Comprobando campos vacios - Checking empty fields --*/
@@ -294,6 +295,14 @@ class administradorControlador extends mainModel{
 					"campo_marcador"=>":Apellido",
 					"campo_valor"=>$apellido
                 ],
+                "usuario_dni"=>[
+					"campo_marcador"=>":DNi",
+					"campo_valor"=>$identidad
+				],
+                "usuario_fnacimiento"=>[
+					"campo_marcador"=>":FNacimiento",
+					"campo_valor"=>$fnacimiento
+				],
                 "usuario_telefono"=>[
 					"campo_marcador"=>":Telefono",
 					"campo_valor"=>$telefono
@@ -318,7 +327,15 @@ class administradorControlador extends mainModel{
 					"campo_marcador"=>":Clave",
 					"campo_valor"=>$clave
 				],
-				"usuario_cuenta_estado"=>[
+                "usuario_codigo"=>[
+					"campo_marcador"=>":Codigo",
+					"campo_valor"=>$code
+				],
+				"usuario_direccion"=>[
+					"campo_marcador"=>":Direccion",
+					"campo_valor"=>$direccion
+				],
+                "usuario_cuenta_estado"=>[
 					"campo_marcador"=>":Estado",
 					"campo_valor"=>$estado
 				],
@@ -659,7 +676,7 @@ class administradorControlador extends mainModel{
 			$check_usuario=mainModel::desconectar($check_usuario);
 
 
-			/*-- Comprobando ventas - Checking sales --*/
+			/*-- Comprobando ventas - Checking sales --
 			$check_ventas=mainModel::ejecutar_consulta_simple("SELECT usuario_id FROM venta WHERE usuario_id='$id' LIMIT 1");
 			if($check_ventas->rowCount()>0){
 				$alerta=[
@@ -673,7 +690,7 @@ class administradorControlador extends mainModel{
 				exit();
 			}
 			$check_ventas->closeCursor();
-			$check_ventas=mainModel::desconectar($check_ventas);
+			$check_ventas=mainModel::desconectar($check_ventas);*/
 
 			
 			/*-- Eliminando administrador - Deleting administrator --*/
@@ -682,7 +699,6 @@ class administradorControlador extends mainModel{
 			if($eliminar_usuario->rowCount()==1){
 				$alerta=[
                     "Alerta"=>"recargar",
-                    "Titulo"=>"¡Administrador eliminado!",
                     "Texto"=>"El administrador ha sido eliminado del sistema exitosamente",
                     "Icon"=>"success",
                     "TxtBtn"=>"Aceptar"
@@ -690,7 +706,6 @@ class administradorControlador extends mainModel{
 			}else{
 				$alerta=[
                     "Alerta"=>"simple",
-                    "Titulo"=>"Ocurrió un error inesperado",
                     "Texto"=>"No hemos podido eliminar el usuario del sistema, por favor intente nuevamente",
                     "Icon"=>"error",
                     "TxtBtn"=>"Aceptar"
