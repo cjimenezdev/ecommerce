@@ -648,11 +648,7 @@
                                     <div class="btn-group shadow-0">
                                         <button type="button" class="btn btn-link dropdown-toggle" data-mdb-toggle="dropdown" aria-expanded="false" ><i class="fas fa-tools"></i> &nbsp; Opciones</button>
                                         <ul class="dropdown-menu">
-                                            <li>
-                                                <a class="dropdown-item" href="'.URL.DASHBOARD.'/product-info/'.mainModel::encryption($rows['producto_id']).'/" >
-                                                    <i class="fas fa-info-circle"></i> &nbsp; Información de producto
-                                                </a>
-                                            </li>';
+                                            ';
 
                                             if($_SESSION['cargo_sto']=="Administrador"){
                                                 $tabla.='<li>
@@ -825,13 +821,15 @@
             if($total>=1 && $pagina<=$Npaginas){
 				$contador=$inicio+1;
 				$pag_inicio=$inicio+1;
+                
+                $tabla.='<div class="row">';
 				foreach($datos as $rows){
 
                     $total_price=$rows['producto_precio_venta']-($rows['producto_precio_venta']*($rows['producto_descuento']/100));
 
 					$tabla.='
-                        <div class="row">
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-2 mt-md-0">
                         <div class="card">
                             <figure>
                             <div class="card-body">';
@@ -876,7 +874,7 @@
                             </figure>
                             </div>
                             </div>
-                        </div>
+                        
 					';
 					$contador++;
 				}
@@ -901,7 +899,7 @@
 				}
 			}
 
-            $tabla.='</div>';
+            $tabla.='</div></div>';
 
 			return $tabla;
         } /*-- Fin controlador - End controller --*/
@@ -1000,12 +998,12 @@
             if($total>=1 && $pagina<=$Npaginas){
 				$contador=$inicio+1;
 				$pag_inicio=$inicio+1;
+                $tabla.='<div class="row">';
 				foreach($datos as $rows){
 
                     $total_price=$rows['producto_precio_venta']-($rows['producto_precio_venta']*($rows['producto_descuento']/100));
 
 					$tabla.='
-                        <div class="row">
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                         <div class="card">
                             <figure>
@@ -1051,7 +1049,7 @@
                             </figure>
                             </div>
                             </div>
-                        </div>
+                        
 					';
 					$contador++;
 				}
@@ -1076,7 +1074,7 @@
 				}
 			}
 
-            $tabla.='</div>';
+            $tabla.='</div></div>';
 
 			return $tabla;
         } /*-- Fin controlador - End controller --*/
@@ -1174,12 +1172,13 @@
             if($total>=1 && $pagina<=$Npaginas){
 				$contador=$inicio+1;
 				$pag_inicio=$inicio+1;
+                $tabla.='
+                        <div class="row">';
 				foreach($datos as $rows){
 
                     $total_price=$rows['producto_precio_venta']-($rows['producto_precio_venta']*($rows['producto_descuento']/100));
 
 					$tabla.='
-                        <div class="row">
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                         <div class="card">
                             <figure>
@@ -1225,7 +1224,6 @@
                             </figure>
                             </div>
                             </div>
-                        </div>
 					';
 					$contador++;
 				}
@@ -1250,7 +1248,7 @@
 				}
 			}
 
-            $tabla.='</div>';
+            $tabla.='</div></div>';
 
 			return $tabla;
         } /*-- Fin controlador - End controller --*/
@@ -1348,12 +1346,13 @@
             if($total>=1 && $pagina<=$Npaginas){
 				$contador=$inicio+1;
 				$pag_inicio=$inicio+1;
+                $tabla.='
+                        <div class="row">';
 				foreach($datos as $rows){
 
                     $total_price=$rows['producto_precio_venta']-($rows['producto_precio_venta']*($rows['producto_descuento']/100));
 
 					$tabla.='
-                        <div class="row">
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                         <div class="card">
                             <figure>
@@ -1424,7 +1423,7 @@
 				}
 			}
 
-            $tabla.='</div>';
+            $tabla.='</div></div>';
 
 			return $tabla;
         } /*-- Fin controlador - End controller --*/
