@@ -11,15 +11,6 @@
          /*--------- Controlador registrar cliente - Controller register client ---------*/
         public function registrar_cliente_controlador(){
 
-            /*-- Comprobando privilegios - Checking privileges 
-            if(isset($_SESSION['cargo_sto']) && ($_SESSION['cargo_sto']=="cliente" || $_SESSION['cargo_sto']=="Cajero")){
-                $estado=mainModel::limpiar_cadena($_POST['cliente_estado_reg']);
-                $verificacion=mainModel::limpiar_cadena($_POST['cliente_verificacion_reg']);
-            }else{
-                $estado="Activa";
-                $verificacion="No verificada";
-            }--*/
-
             /*-- Recibiendo datos del formulario - Receiving form data --*/
             $nombre=mainModel::limpiar_cadena($_POST['cliente_nombre_reg']);
             $apellido=mainModel::limpiar_cadena($_POST['cliente_apellido_reg']);
@@ -40,10 +31,9 @@
             }
 
             /*-- Verificando integridad de los datos - Checking data integrity --*/
-            if(mainModel::verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{4,35}",$nombre)){
+            if(mainModel::verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,35}",$nombre)){
 				$alerta=[
 					"Alerta"=>"simple",
-					"Titulo"=>"Formato no valido",
 					"Texto"=>"El NOMBRE no coincide con el formato solicitado",
                     "Icon"=>"error",
                     "TxtBtn"=>"Aceptar"
@@ -52,10 +42,9 @@
 				exit();
             }
 
-            if(mainModel::verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{4,35}",$apellido)){
+            if(mainModel::verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,35}",$apellido)){
 				$alerta=[
 					"Alerta"=>"simple",
-					"Titulo"=>"Formato no valido",
 					"Texto"=>"El APELLIDO no coincide con el formato solicitado",
                     "Icon"=>"error",
                     "TxtBtn"=>"Aceptar"
@@ -63,59 +52,10 @@
 				echo json_encode($alerta);
 				exit();
             }
-            /*-- Verificando integridad de los datos - Checking data integrity 
-            if(mainModel::verificar_datos("[0-9()+]{8,20}",$telefono)){
-                $alerta=[
-                    "Alerta"=>"simple",
-                    "Titulo"=>"Formato no valido",
-                    "Texto"=>"El TELÉFONO no coincide con el formato solicitado",
-                    "Icon"=>"error",
-                    "TxtBtn"=>"Aceptar"
-                ];
-                echo json_encode($alerta);
-                exit();
-            }
-
-            if(mainModel::verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{4,29}",$provincia)){
-                $alerta=[
-                    "Alerta"=>"simple",
-                    "Titulo"=>"Formato no valido",
-                    "Texto"=>"ESTADO, PROVINCIA O DEPARTAMENTO no coincide con el formato solicitado",
-                    "Icon"=>"error",
-                    "TxtBtn"=>"Aceptar"
-                ];
-                echo json_encode($alerta);
-                exit();
-            }
-
-            if(mainModel::verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{4,29}",$ciudad)){
-                $alerta=[
-                    "Alerta"=>"simple",
-                    "Titulo"=>"Formato no valido",
-                    "Texto"=>"CIUDAD o PUEBLO no coincide con el formato solicitado",
-                    "Icon"=>"error",
-                    "TxtBtn"=>"Aceptar"
-                ];
-                echo json_encode($alerta);
-                exit();
-            }
-
-            if(mainModel::verificar_datos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{4,70}",$direccion)){
-                $alerta=[
-                    "Alerta"=>"simple",
-                    "Titulo"=>"Formato no valido",
-                    "Texto"=>"La DIRECCIÓN no coincide con el formato solicitado",
-                    "Icon"=>"error",
-                    "TxtBtn"=>"Aceptar"
-                ];
-                echo json_encode($alerta);
-                exit();
-            }--*/
 
             if(mainModel::verificar_datos("[a-zA-Z0-9$@.-]{7,100}",$clave_1) || mainModel::verificar_datos("[a-zA-Z0-9$@.-]{7,100}",$clave_2)){
                 $alerta=[
 					"Alerta"=>"simple",
-					"Titulo"=>"Formato no valido",
 					"Texto"=>"Las CONTRASEÑAS no coincide con el formato solicitado",
                     "Icon"=>"error",
                     "TxtBtn"=>"Aceptar"
@@ -123,19 +63,6 @@
 				echo json_encode($alerta);
 				exit();
             }
-
-            /*-- Comprobando genero - Checking gender 
-			if($genero!="Masculino" && $genero!="Femenino"){
-				$alerta=[
-					"Alerta"=>"simple",
-					"Titulo"=>"Opción no valida",
-					"Texto"=>"Ha seleccionado un GÉNERO no valido",
-                    "Icon"=>"error",
-                    "TxtBtn"=>"Aceptar"
-				];
-				echo json_encode($alerta);
-				exit();
-            }--*/
 
             /*-- Comprobando email - Checking email --*/
             if(filter_var($email, FILTER_VALIDATE_EMAIL)){
@@ -177,45 +104,6 @@
 				$clave=mainModel::encryption($clave_1);
             }
 
-            /*-- Comprobando estado de cuenta - Checking account status
-			if($estado!="Activa" && $estado!="Deshabilitada"){
-				$alerta=[
-					"Alerta"=>"simple",
-					"Titulo"=>"Opción no valida",
-					"Texto"=>"Ha seleccionado un ESTADO DE CUENTA no valido",
-                    "Icon"=>"error",
-                    "TxtBtn"=>"Aceptar"
-				];
-				echo json_encode($alerta);
-				exit();
-            } --*/
-
-            /*-- Comprobando verificacion de cuenta - Checking account verification 
-			if($verificacion!="Verificada" && $verificacion!="No verificada"){
-				$alerta=[
-					"Alerta"=>"simple",
-					"Titulo"=>"Opción no valida",
-					"Texto"=>"Ha seleccionado un valor de VERIFICACION DE CUENTA no valido",
-                    "Icon"=>"error",
-                    "TxtBtn"=>"Aceptar"
-				];
-				echo json_encode($alerta);
-				exit();
-            }--*/
-
-            /*-- Comprobando foto o avatar - Checking photo or avatar 
-            if(!is_file("../vistas/assets/avatar/".$avatar)){
-                $alerta=[
-					"Alerta"=>"simple",
-					"Titulo"=>"Ocurrió un error inesperado",
-					"Texto"=>"No hemos encontrado el avatar en el sistema, por favor seleccione otro e intente nuevamente",
-                    "Icon"=>"error",
-                    "TxtBtn"=>"Aceptar"
-				];
-				echo json_encode($alerta);
-				exit();
-            }--*/
-
 
             /*-- Preparando datos para enviarlos al modelo - Preparing data to send to the model --*/
 			$datos_cliente_reg=[
@@ -243,7 +131,7 @@
 			if($agregar_cliente->rowCount()==1){
                 $alerta=[
                     "Alerta"=>"limpiar",
-                    "Texto"=>"Los datos del cliente se registraron con éxito",
+                    "Texto"=>"Los datos se registraron con éxito",
                     "Icon"=>"success",
                     "TxtBtn"=>"Aceptar"
                 ];
@@ -261,7 +149,6 @@
 
 			echo json_encode($alerta);
         } /*-- Fin controlador - End controller --*/
-        
         /*--------- Controlador registrar cliente - Controller register client ---------*/
         
         public function registrar_cliente_administrador_controlador(){
@@ -563,9 +450,7 @@
 
 			echo json_encode($alerta);
         }  
-        
         /*-- Fin controlador - End controller --*/
-
 
         /*--------- Controlador paginador clientes - Clients Pager Controller ---------*/
         public function paginador_cliente_controlador($pagina,$registros,$url,$busqueda){
@@ -630,8 +515,8 @@
                     <td class="actions ps-0">
                     <div class="btn-group dropup shadow-0">
                     <a type="button" style="margin-left:0 !important;" class="btn btn-sm btn-rounded badge badge-warning m-auto disabled" href="' . URL.DASHBOARD. '/customer-update/' . mainModel::encryption($rows['cliente_id']) . '/" data-mdb-toggle="tooltip" data-mdb-placement="left" title="Editar"><i class="fa-solid fa-pen-nib"></i></a>
-						<form class="FormularioAjax d-inline-block m-auto" action="'.URL.'ajax/administradorAjax.php" method="POST" data-form="delete" data-lang="es">
-                        <input type="hidden" name="modulo_administrador" value="eliminar">
+						<form class="FormularioAjax d-inline-block m-auto" action="'.URL.'ajax/clienteAjax.php" method="POST" data-form="delete" data-lang="es">
+                        <input type="hidden" name="modulo_cliente" value="eliminar">
                         <input type="hidden" name="cliente_id_del" value="' . mainModel::encryption($rows['cliente_id']) . '">
                         <button type="submit" class="btn btn-sm btn-rounded badge badge-danger disabled mx-2" data-mdb-toggle="tooltip" data-mdb-placement="left" title="Eliminar"><i class="fa-solid fa-trash"></i></button></form> 
                     </div>
@@ -642,8 +527,8 @@
                     <td class="actions ps-0">
                         <div class="btn-group dropup shadow-0">
                         <a type="button" class="btn btn-sm btn-rounded badge badge-warning m-auto shadow-3-strong ms-2" href="' . URL.DASHBOARD. '/customer-update/' . mainModel::encryption($rows['cliente_id']) . '/" data-mdb-toggle="tooltip" data-mdb-placement="left" title="Editar"><i class="fa-solid fa-pen-nib"></i></a>
-						<form class="FormularioAjax d-inline-block m-auto" action="' . URL . 'ajax/administradorAjax.php" method="POST" data-form="delete" data-lang="es">
-                        <input type="hidden" name="modulo_administrador" value="eliminar">
+						<form class="FormularioAjax d-inline-block m-auto" action="' . URL . 'ajax/clienteAjax.php" method="POST" data-form="delete" data-lang="es">
+                        <input type="hidden" name="modulo_cliente" value="eliminar">
                         <input type="hidden" name="cliente_id_del" value="' . mainModel::encryption($rows['cliente_id']) . '">
                         <button type="submit" class="btn btn-sm btn-rounded badge badge-danger mx-2" data-mdb-toggle="tooltip" data-mdb-placement="left" title="Eliminar"><i class="fa-solid fa-trash"></i></button></form> 
                         </div>
@@ -724,7 +609,6 @@
 			if($_SESSION['cargo_sto']!="Administrador" && $_SESSION['cargo_sto']!="Cajero"){
                 $alerta=[
                     "Alerta"=>"simple",
-                    "Titulo"=>"Acceso no permitido",
                     "Texto"=>"No tienes los permisos necesarios para realizar esta operación en el sistema",
                     "Icon"=>"error",
                     "TxtBtn"=>"Aceptar"
@@ -742,7 +626,6 @@
 			if($check_cliente->rowCount()<=0){
 				$alerta=[
 					"Alerta"=>"simple",
-					"Titulo"=>"Cliente no encontrado",
 					"Texto"=>"El cliente que intenta eliminar no existe en el sistema",
                     "Icon"=>"error",
                     "TxtBtn"=>"Aceptar"
@@ -758,7 +641,6 @@
 			if($check_ventas->rowCount()>0){
 				$alerta=[
 					"Alerta"=>"simple",
-					"Titulo"=>"Ocurrió un error inesperado",
 					"Texto"=>"No podemos eliminar el cliente debido a que tiene ventas asociadas, recomendamos deshabilitar este cliente si ya no será usado en el sistema",
                     "Icon"=>"error",
                     "TxtBtn"=>"Aceptar"
@@ -775,7 +657,6 @@
 			if($eliminar_cliente->rowCount()==1){
 				$alerta=[
                     "Alerta"=>"recargar",
-                    "Titulo"=>"¡Cliente eliminado!",
                     "Texto"=>"El cliente ha sido eliminado del sistema exitosamente",
                     "Icon"=>"success",
                     "TxtBtn"=>"Aceptar"
@@ -783,7 +664,6 @@
 			}else{
 				$alerta=[
                     "Alerta"=>"simple",
-                    "Titulo"=>"Ocurrió un error inesperado",
                     "Texto"=>"No hemos podido eliminar el cliente del sistema, por favor intente nuevamente",
                     "Icon"=>"error",
                     "TxtBtn"=>"Aceptar"
@@ -851,7 +731,6 @@
             if($nombre=="" || $apellido=="" || $email=="" || $identidad=="" || $direccion=="" || $estado ==""){
                 $alerta=[
 					"Alerta"=>"simple",
-					"Titulo"=>"Ocurrió un error inesperado",
 					"Texto"=>"No has llenado todos los campos que son obligatorios",
                     "Icon"=>"error",
                     "TxtBtn"=>"Aceptar"
@@ -861,10 +740,9 @@
             }	
 
 			/*-- Verificando integridad de los datos - Checking data integrity --*/
-            if(mainModel::verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{4,35}",$nombre)){
+            if(mainModel::verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,35}",$nombre)){
 				$alerta=[
 					"Alerta"=>"simple",
-					"Titulo"=>"Formato no valido",
 					"Texto"=>"El NOMBRE no coincide con el formato solicitado",
                     "Icon"=>"error",
                     "TxtBtn"=>"Aceptar"
@@ -873,10 +751,9 @@
 				exit();
             }
 
-            if(mainModel::verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{4,35}",$apellido)){
+            if(mainModel::verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,35}",$apellido)){
 				$alerta=[
 					"Alerta"=>"simple",
-					"Titulo"=>"Formato no valido",
 					"Texto"=>"El APELLIDO no coincide con el formato solicitado",
                     "Icon"=>"error",
                     "TxtBtn"=>"Aceptar"
@@ -1026,7 +903,6 @@
 					if($check_email->rowCount()>0){
                         $alerta=[
                             "Alerta"=>"simple",
-                            "Titulo"=>"Ocurrió un error inesperado",
                             "Texto"=>"El EMAIL ingresado ya se encuentra registrado en el sistema",
                             "Icon"=>"error",
                             "TxtBtn"=>"Aceptar"
@@ -1039,7 +915,6 @@
 				}else{
                     $alerta=[
                         "Alerta"=>"simple",
-                        "Titulo"=>"Formato no valido",
                         "Texto"=>"Ha ingresado un EMAIL no valido",
                         "Icon"=>"error",
                         "TxtBtn"=>"Aceptar"
@@ -1056,7 +931,6 @@
 				if(mainModel::verificar_datos("[a-zA-Z0-9$@.-]{7,100}",$clave_1) || mainModel::verificar_datos("[a-zA-Z0-9$@.-]{7,100}",$clave_2)){
 					$alerta=[
 						"Alerta"=>"simple",
-						"Titulo"=>"Formato no valido",
 						"Texto"=>"Las NUEVAS CONTRASEÑAS no coincide con el formato solicitado",
 						"Icon"=>"error",
 						"TxtBtn"=>"Aceptar"
@@ -1067,7 +941,6 @@
 					if($clave_1!=$clave_2){
 						$alerta=[
 							"Alerta"=>"simple",
-							"Titulo"=>"Ocurrió un error inesperado",
 							"Texto"=>"Las NUEVAS CONTRASEÑAS que acaba de ingresar no coinciden",
 							"Icon"=>"error",
 							"TxtBtn"=>"Aceptar"
