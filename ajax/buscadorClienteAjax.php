@@ -51,7 +51,7 @@ require "../model/mainModel.php";
                             <p class="text-muted mb-0 ">' . $v['cliente_genero'] . '</p>
                         </td>
                         <td><p class=" font-weight-normal">' . $v['cliente_dni'] . '</p></td>
-                        <td><p class="font-weight-light">0' . $v['cliente_telefono'] . '</p></td>
+                        <td><p class="font-weight-light">0' . $v['cliente_celular'] . '</p></td>
                         <td><p class=" font-weight-light">' . $v['cliente_fnacimiento'] . '</p></td>
                         <td><p class=" font-weight-normal">' . $v['cliente_direccion'] . '</p></td>
                         <td>
