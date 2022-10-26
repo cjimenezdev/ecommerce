@@ -1,8 +1,8 @@
 <?php
 
 /*----------  Datos del servidor  ----------*/
-	const SERVER="127.0.0.1:3307";
-	const DB="williams";
+	const SERVER="localhost";
+	const DB="sistema";
 	const USER="root";
 	const PASS="";
 
@@ -22,8 +22,9 @@
     private $clave  = PASS;
     private $db     = DB;
     public $conexion;
+
     public function __construct(){
-        $this->conexion = new mysqli($this->host, $this->usuario, $this->clave,$this->db) or die(mysql_error());
+        $this->conexion = new mysqli($this->host, $this->usuario, $this->clave,$this->db) or die(mysqli_error($this->conexion));
         $this->conexion->set_charset("utf8");
     }
 

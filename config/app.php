@@ -3,7 +3,7 @@
 	/*----------  
 	Ruta o dominio del servidor  - Server path or domain
 	----------*/
-	const URL="https://williamshop.herokuapp.com/";
+	const URL="http://localhost/ecommerce/";
 
 
 	/*----------  
@@ -33,20 +33,14 @@
 
 
 	/*----------  Redes sociales - Social networks  ----------*/
-	const FACEBOOK="https://www.facebook.com/Myweservice";
+	const FACEBOOK="";
 	const INSTAGRAM="";
 	const YOUTUBE="";
 	const TWITTER="";
 
-
-	/*----------  Direccion - Address  ----------
-	const COUNTRY="Yantzaza";
-	const ADDRESS="jose arcetales y begonias";*/
-	
-
 	/*----------  Configuración de moneda - Currency Settings  ----------*/
 	const COIN_SYMBOL="$";
-	const COIN_NAME="USD";
+	const COIN_NAME="Q";
 	const COIN_DECIMALS="2";
 	const COIN_SEPARATOR_THOUSAND=",";
 	const COIN_SEPARATOR_DECIMAL=".";
