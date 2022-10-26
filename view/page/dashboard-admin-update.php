@@ -162,7 +162,7 @@
                                             </div>
                                             <div class="col-12 col-lg-10 m-auto">
                                                 <div class="form__outline mb-5">
-                                                    <input type="text" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{4,35}"
+                                                    <input type="text" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,35}"
                                                         class="form__input" name="usuario_nombre_up"
                                                         value="<?php echo $campos['usuario_nombre']; ?>"
                                                         id="usuario_nombre" maxlength="35" placeholder=" ">
@@ -172,7 +172,7 @@
                                             </div>
                                             <div class="col-12 col-lg-10 m-auto">
                                                 <div class="form__outline mb-5">
-                                                    <input type="text" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{4,35}"
+                                                    <input type="text" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,35}"
                                                         class="form__input" name="usuario_apellido_up"
                                                         value="<?php echo $campos['usuario_apellido']; ?>"
                                                         id="usuario_apellido" maxlength="35">
@@ -182,7 +182,7 @@
                                             </div>
                                             <div class="col-12 col-lg-10 m-auto">
                                                 <div class="form__outline mb-5">
-                                                    <input type="text" pattern="[a-zA-Z0-9]{4,30}" class="form__input"
+                                                    <input type="text" pattern="[a-zA-Z0-9]{3,30}" class="form__input"
                                                         name="usuario_usuario_up"
                                                         value="<?php echo $campos['usuario_usuario']; ?>"
                                                         id="usuario_usuario" maxlength="30" placeholder=" ">

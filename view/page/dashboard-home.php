@@ -39,7 +39,7 @@ body {
                                         <div class="card">
                                             <div class="card-body">
                                                 <?php $total_clientes=$ins_login->datos_tabla("Normal","cliente","cliente_id",0);?>
-                                                <a href="<?php echo URL.DASHBOARD; ?>/client-list/" class="tile">
+                                                <a href="<?php echo URL.DASHBOARD; ?>/customer-new/" class="tile">
                                                     <div class="tile-tittle">Clientes</div>
                                                     <div class="tile-icon">
                                                         <i class="fas fa-users fa-fw"></i>
@@ -54,7 +54,7 @@ body {
                                             <div class="card-body">
                                                 <?php $total_clientes->closeCursor(); $total_clientes=$ins_login->desconectar($total_clientes);
                                                 $total_productos=$ins_login->datos_tabla("Normal","producto","producto_id",0);?>
-                                                <a href="<?php echo URL.DASHBOARD; ?>/product-list/" class="tile">
+                                                <a href="<?php echo URL.DASHBOARD; ?>/product-new/" class="tile">
                                                     <div class="tile-tittle">Productos</div>
                                                     <div class="tile-icon">
                                                         <i class="fas fa-box-open fa-fw"></i>
@@ -168,7 +168,7 @@ body {
 </div>
 <footer class="footer-admin d-flex justify-content-center align-items-center my-4">
     <div class="footer__content text-center flex-column flex-lg-row p-3 ps-lg-0 ">
-        <p class="mb-0 "><i class="fas fa-copyright "></i> 2022 Carlos Jiménez.</p>
+        <p class="mb-0 "><i class="fas fa-copyright "></i> 2022 WILLIAM´S.</p>
         <a href="# ">Todos los derechos reservados.</a>
     </div>
 </footer>

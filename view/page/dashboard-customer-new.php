@@ -384,14 +384,14 @@
                             <div class="col-12 col-sm-9">
                                 <div class="d-flex  justify-content-sm-start ">
                                     <?php if ($_SESSION['cargo_sto'] == "Cajero") { ?>
-                                    <button type="button" data-mdb-toggle="modal" data-mdb-target="#exampleModal"
-                                        class="btn text-white rounded-4" title="Agregar"
+                                    <button type="button" disabled data-mdb-toggle="modal" data-mdb-target="#exampleModal"
+                                        class="btn text-white rounded-4 disabled" title="Agregar"
                                         style="background-color: #7367f0 !important; height: 40px;">
                                         <i class="fa-solid fa-plus"></i> Agregar
                                     </button>
                                     <?php } else { ?>
-                                    <button type="button" disabled data-mdb-toggle="modal"
-                                        data-mdb-target="#exampleModal" class="btn text-white rounded-4 disabled"
+                                    <button type="button" data-mdb-toggle="modal"
+                                        data-mdb-target="#exampleModal" class="btn text-white rounded-4"
                                         title="Agregar" style="background-color: #7367f0 !important; height: 40px;">
                                         <i class="fa-solid fa-plus"></i> Agregar
                                     </button>

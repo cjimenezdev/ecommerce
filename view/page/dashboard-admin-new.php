@@ -226,7 +226,7 @@
                                                                                 pattern="\d{1,2}/\d{1,2}/\d{4}"
                                                                                 placeholder=" "
                                                                                 class="form__input datepicker"
-                                                                                name="usuario_birthday_reg"
+                                                                                name="usuario_fnacimiento_reg"
                                                                                 id="usuario_nacimiento" maxlength="20">
                                                                             <label for="usuario_nacimiento"
                                                                                 class="form__label">Año
@@ -339,7 +339,7 @@
                                                                     <div class="col-12">
                                                                         <div class="form__outline mb-5">
                                                                             <input type="text" class="form__input"
-                                                                                name="usuario_code_reg"
+                                                                                name="usuario_codigo_reg"
                                                                                 id="usuario_código" pattern="[0-9]{6}"
                                                                                 maxlength="6" placeholder=" ">
                                                                             <label for="usuario_codigo"

@@ -160,7 +160,7 @@
                                             </div>
                                             <div class="col-12 col-lg-10 m-auto">
                                                 <div class="form__outline mb-5">
-                                                    <input type="text" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{4,35}"
+                                                    <input type="text" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,35}"
                                                         class="form__input" name="cliente_nombre_up"
                                                         value="<?php echo $campos['cliente_nombre']; ?>"
                                                         id="cliente_nombre" maxlength="35" placeholder=" ">
@@ -170,7 +170,7 @@
                                             </div>
                                             <div class="col-12 col-lg-10 m-auto">
                                                 <div class="form__outline mb-5">
-                                                    <input type="text" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{4,35}"
+                                                    <input type="text" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,35}"
                                                         class="form__input" name="cliente_apellido_up"
                                                         value="<?php echo $campos['cliente_apellido']; ?>"
                                                         id="cliente_apellido" maxlength="35">

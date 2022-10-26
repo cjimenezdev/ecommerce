@@ -100,7 +100,7 @@
                                 <div class="col-md-6">
                                     <div class="form__outline mb-4">
                                         <input type="text" class="form__input" id="login_name" name="cliente_nombre_reg"
-                                            pattern="[a-zA-Z0-9]{4,30}" maxlength="30" required="Nombre"
+                                            pattern="[a-zA-Z0-9]{3,30}" maxlength="30" required="Nombre"
                                             autocomplete="off" placeholder=" ">
                                         <label for="login_name" class="form__label"><i
                                                 class="fa-solid fa-signature"></i>
@@ -110,7 +110,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form__outline mb-4">
-                                        <input type="text" class="form__input" id="login_user"
+                                        <input type="text" class="form__input" id="login_user" pattern="[a-zA-Z0-9]{3,30}"
                                             name="cliente_apellido_reg" maxlength="50" required="" autocomplete="off"
                                             placeholder=" ">
                                         <label for="login_user" class="form__label"><i
